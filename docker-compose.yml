@@ -1,0 +1,9 @@
+services:
+  image-voice:
+    build: .
+    container_name: echo-image-voice
+    ports:
+      - "7862:7862"
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
