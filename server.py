@@ -24,8 +24,8 @@ if os.path.exists(_env_file):
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 log = logging.getLogger("image-voice")
 
-LM_STUDIO_URL = "http://localhost:1234/v1/chat/completions"
-CHATTERBOX_URL = "http://localhost:5050/speak"
+LM_STUDIO_URL = os.environ.get("LM_STUDIO_URL", "http://localhost:1234/v1/chat/completions")
+CHATTERBOX_URL = os.environ.get("CHATTERBOX_URL", "http://localhost:5050/speak")
 VISION_MODEL = "google/gemma-3-4b"
 CLAUDE_MODEL = "claude-haiku-4-5-20251001"
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
@@ -98,7 +98,7 @@ async def health():
         pass
     try:
         async with httpx.AsyncClient(timeout=3) as c:
-            await c.get("http://localhost:5050/health")
+            await c.get(CHATTERBOX_URL.replace("/speak", "/health"))
             chatterbox_ok = True
     except Exception:
         pass
